@@ -16,19 +16,20 @@ def choose_model(model):
     num_features = model.get('num_features', 1)
     name = model.get('name', '')
     model_dict = {
-        'lstm': lstm.create_lstm_model(num_features, name=name),
-        'convolutional': conv.create_conv_model(num_features, name=name),
-        'conv_lstm': convLSTM.create_conv_lstm_model(num_features, name=name),
-        'lstm_conv': LSTMconv.create_lstm_conv_model(num_features, name=name),
-        'naive': RepeatBaseline(),
-        'test': conv.create_conv_model_old(num_features, name=name)
+        'lstm': lstm.create_lstm_model,
+        'convolutional': conv.create_conv_model,
+        'conv_lstm': convLSTM.create_conv_lstm_model,
+        'lstm_conv': LSTMconv.create_lstm_conv_model,
+        'naive': lambda x, y: RepeatBaseline(),
+        # 'test': lstm.create_lstm_model_test
     }
-    return model_dict[model['type']]
+    func = model_dict.get(model['type'], lambda x, y: "Invalid model type")
+    return func(num_features, name)
 
 
-def fit_model(model, window, patience=cfg.training['patience']):
+def fit_model(model, window):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      patience=patience,
+                                                      patience=cfg.training['patience'],
                                                       mode='min')
 
     history = model.fit(window.train, epochs=cfg.training['max_epochs'],
@@ -53,6 +54,7 @@ def build_model(model, window, path, train=False):
 def get_predictions(model, data, label, scaler):
     predictions = model(data).numpy()
     return scaler.inverse_transform(correct_values(predictions, label))
+    # return correct_values(scaler.inverse_transform(predictions), label)
     # return scaler.inverse_transform(correct_values(predictions[:, :, 0], label))
 
 

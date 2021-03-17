@@ -4,7 +4,7 @@ import models.train_model as tm
 
 import config as cfg
 import config_models as cfg_mod
-from visualization.plotting import plot_rmse, plot_forecast
+import visualization.plotting as plotting
 
 # import numpy as np
 import pandas as pd
@@ -12,7 +12,19 @@ import pickle
 
 
 def main():
-    models = cfg_mod.models
+    # models = prepare_models(cfg_mod.models)
+    # print_metrics(models)
+    plotting.multi_plot(cfg_mod.cities, cfg.errors['metric'])
+    ################ Plot RMSE ###################
+    # plotting.plot_metric(models, 'skewness').show()
+    # plotting.plot_metric(models, 'rmse').show()
+    # plotting.plot_metric(models, 'mae').show()
+    # plotting.multi_plot_days(models, cfg.plotting['days'])
+    # for day in cfg.plotting['days']:
+    #     plotting.plot_forecast(models, day.year, day.month, day.day, day.hour).show()
+
+
+def prepare_models(models):
     for model in models:
         df = pd.read_pickle('data/pickles/' + model['city'] + '.pickle')
         train, val, test, num_features, date_time, column_indices = \
@@ -42,32 +54,31 @@ def main():
                                                         './checkpoints/' + model['city'] + '/' + model['type'] + '_' +
                                                         model['city'] + model.get('number', ''),
                                                         train=model['train_bool'])
-            model['baseline']['rmse'], model['baseline']['mae'] = \
-                model['window'].get_metrics(model['baseline']['model'], model['scaler'])
-        model['rmse'], model['mae'] = \
-            model['window'].get_metrics(model['model'], model['scaler'])
-
-        eval_models(model)
-
-    ################ Plot RMSE ###################
-    plot_rmse(models)
-    # for day in cfg.plotting['days']:
-    #     plot_forecast(models, day.year, day.month, day.day, day.hour)
+            model['baseline']['rmse'], model['baseline']['mae'], model['baseline']['skewness'] = \
+                model['window'].get_metrics(model['baseline']['model'], model['scaler'], model['city'])
+        model['rmse'], model['mae'], model['skewness'] = \
+            model['window'].get_metrics(model['model'], model['scaler'], model['city'])
+    return models
 
 
-def eval_models(model):
-    rmse_model = sum(model['rmse'])/24
-    mae_model = sum(model['mae'])/24
-    print(model['name'] + '  ' + model['type'] + ':')
-    if model.get('baseline'):
-        rmse_baseline = sum(model['baseline']['rmse'])/24
-        mae_baseline = sum(model['baseline']['mae'])/24
-        print('Percentage RMSE: ', rmse_model/rmse_baseline)
-        print('Percentage MAE: ', mae_model/mae_baseline)
-    else:
-        print('No Baseline defined, can not give RMSE Percentage!')
-    print('Total RMSE: ', rmse_model)
-    print('Total MAE: ', mae_model)
+def print_metrics(models):
+    rmse_baseline = None
+    mae_baseline = None
+    for model in models:
+        if model.get('baseline'):
+            rmse_baseline = sum(model['baseline']['rmse']) / 24
+            mae_baseline = sum(model['baseline']['mae']) / 24
+    for model in models:
+        rmse_model = sum(model['rmse'])/24
+        mae_model = sum(model['mae'])/24
+        print(model['name'] + ': ' + model['city'].capitalize() + ' ' + model['type'])
+        if rmse_baseline is not None:
+            print('Percentage RMSE: ', rmse_model/rmse_baseline)
+            print('Percentage MAE: ', mae_model/mae_baseline)
+        else:
+            print('No Baseline defined, can not give RMSE Percentage!')
+        print('Total RMSE: ', rmse_model)
+        print('Total MAE: ', mae_model)
 
 
 if __name__ == '__main__':

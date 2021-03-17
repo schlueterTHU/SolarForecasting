@@ -1,2 +1,2 @@
-model_checkpoint_path: "lstm_hull1"
-all_model_checkpoint_paths: "lstm_hull1"
+model_checkpoint_path: "convolutional_hull0"
+all_model_checkpoint_paths: "convolutional_hull0"

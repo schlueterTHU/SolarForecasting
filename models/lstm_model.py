@@ -7,7 +7,8 @@ def create_lstm_model(num_features, name='noname'):
     model = tf.keras.models.Sequential([
         # Shape [batch, time, features] => [batch, lstm_units]
         # Adding more `lstm_units` just overfits more quickly.
-        tf.keras.layers.LSTM(32, return_sequences=False, input_shape=(24, num_features)),
+        # tf.keras.layers.LSTM(32, return_sequences=True, input_shape=(24, num_features)),
+        tf.keras.layers.LSTM(32, return_sequences=False),
         # Shape => [batch, out_steps*features]
         # tf.keras.layers.Dense(cfg.prediction['num_predictions'] * num_features,
         #                       kernel_initializer=tf.initializers.zeros),
@@ -20,6 +21,6 @@ def create_lstm_model(num_features, name='noname'):
     model.__setattr__('model_type', 'lstm')
 
     model.compile(loss=tf.losses.MeanSquaredError(),
-                  optimizer=tf.optimizers.Adam(cfg.training['learning_rate']),
+                  optimizer=tf.optimizers.Adam(cfg.training['lr_lstm']),
                   metrics=[tf.metrics.MeanAbsoluteError()])
     return model

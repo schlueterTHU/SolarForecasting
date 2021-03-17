@@ -4,7 +4,7 @@ import config as cfg
 
 
 def main():
-    city = 'ulm_old'
+    city = 'lemberg'
     file_location = 'data/' + city + '.xlsx'
     sheet_name = 'data'
 

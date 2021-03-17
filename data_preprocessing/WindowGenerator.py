@@ -1,7 +1,10 @@
+import os
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 import matplotlib.pylab as plt
 from sklearn.metrics import mean_squared_error, mean_absolute_error
+from scipy.stats import skew
 import pickle
 
 import models.train_model as tm
@@ -110,10 +113,11 @@ class WindowGenerator:
         plt.xlabel('Time [h]')
         plt.show()
 
-    def get_metrics(self, model, scaler):
+    def get_metrics(self, model, scaler, city='unknown'):
         pred = []
         label = []
         weight = []
+        err = []
         for data in self.test:
             inputs, labels = data
             labels = labels.numpy()
@@ -122,14 +126,37 @@ class WindowGenerator:
             pred.extend(predictions)
             label.extend(labels)
             weight.extend(determine_weight(labels))
+            err_help = scaler.inverse_transform(labels)-predictions
+            err_help[labels == 0] = float('NaN')
+            err.extend(err_help)
         pred = np.array(pred)
         label = scaler.inverse_transform(np.array(label))
+        # print(model.model_type)
+        # err_test = label-pred
+        err = np.array(err)
+        skewness = skew(err, nan_policy='omit')
+        # if model.model_type == 'lstm_conv':
+        #     plt.hist(err[:, 5], bins=50)
+        #     plt.title('LSTMconv')
+        #     plt.xlabel('error')
+        #     plt.ylabel('frequency')
+        #     plt.show()
+        if cfg.errors['error_to_excel']:
+            writepath = 'saver/outputs/errors/'+city+'.xlsx'
+            mode = 'a' if os.path.exists(writepath) else 'w'
+            sheet = model.model_type
+            err_df = pd.DataFrame(err)
+            err_df.columns = ['hour'+str(i) for i in range(cfg.prediction['num_predictions'])]
+            with pd.ExcelWriter(writepath, mode=mode) as writer:
+                # if sheet in writer.book.sheetnames:
+                #     writer.book.remove(writer.book[sheet])
+                err_df.to_excel(writer, sheet, float_format='%.5f')
+                writer.save()
         rmse = mean_squared_error(label, pred, sample_weight=weight, multioutput='raw_values', squared=False)
         # rmse = mean_squared_error(label, pred, multioutput='raw_values', squared=False)
         mae = mean_absolute_error(label, pred, sample_weight=weight, multioutput='raw_values')
         # mae = mean_absolute_error(label, pred, multioutput='raw_values')
-        # TODO: number of values for Metrics calculation
-        return rmse, mae
+        return rmse, mae, skewness
 
     def make_dataset(self, data):
         data = np.array(data, dtype=np.float32)

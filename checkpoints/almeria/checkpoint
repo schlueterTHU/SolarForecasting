@@ -1,2 +1,2 @@
-model_checkpoint_path: "lstm_almeria1"
-all_model_checkpoint_paths: "lstm_almeria1"
+model_checkpoint_path: "convolutional_almeria0"
+all_model_checkpoint_paths: "convolutional_almeria0"

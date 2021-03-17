@@ -1,2 +1,2 @@
-model_checkpoint_path: "lstm_ulm_old1"
-all_model_checkpoint_paths: "lstm_ulm_old1"
+model_checkpoint_path: "lstm_ulm_old2"
+all_model_checkpoint_paths: "lstm_ulm_old2"

@@ -58,14 +58,14 @@ hull1 = {
 }
 
 rovaniemi = {
-    'name': 'rovaniemi', 'city': 'rovaniemi', 'type': 'lstm',
-    'fields': cfg.fields['usedfields'],
+    'name': 'Rovaniemi LSTMconv', 'city': 'rovaniemi', 'type': 'lstm_conv', 'number': '1',
+    'fields': cfg.fields['usedfields1'],
     'train_bool': False,
     # 'baseline': {'type': 'naive'},
     'plotting': {'marker': '*', 'linestyle': '-'},
 }
 rovaniemi1 = {
-    'name': 'Rovaniemi_wo_MSI_DayAhead', 'city': 'rovaniemi', 'type': 'lstm', 'number': '1',
+    'name': 'Rovaniemi LSTM', 'city': 'rovaniemi', 'type': 'lstm', 'number': '1',
     'fields': cfg.fields['usedfields1'],
     'train_bool': False,
     # 'baseline': {'type': 'naive'},
@@ -73,39 +73,104 @@ rovaniemi1 = {
 }
 
 ulm = {
-    'name': 'Ulm', 'city': 'ulm', 'type': 'lstm',
+    'name': 'Ulm_convolutional', 'city': 'ulm', 'type': 'convolutional', 'number': '',
     'fields': cfg.fields['usedfields'],
     'train_bool': False,
     # 'baseline': {'type': 'naive'},
     'plotting': {'marker': '*', 'linestyle': '-'}
 }
 ulm1 = {
-    'name': 'Ulm_wo_MSI_DayAhead', 'city': 'ulm', 'type': 'lstm', 'number': '1',
+    'name': 'Ulm_convolutional1', 'city': 'ulm', 'type': 'convolutional', 'number': '_test1',
     'fields': cfg.fields['usedfields1'],
-    'train_bool': False,
+    'train_bool': True,
     # 'baseline': {'type': 'naive'},
     'plotting': {'marker': '^', 'linestyle': '-'}
 }
-ulm_conv = {
-    'name': 'Ulm_conv', 'city': 'ulm', 'type': 'conv_lstm',
-    'fields': cfg.fields['usedfields'],
+ulm2 = {
+    'name': 'Ulm_convolutional2', 'city': 'ulm', 'type': 'convolutional', 'number': '2',
+    'fields': cfg.fields['usedfields2'],
     'train_bool': False,
     # 'baseline': {'type': 'naive'},
     'plotting': {'marker': 'x', 'linestyle': '-'}
 }
-ulm_conv1 = {
-    'name': 'Ulm_conv1', 'city': 'ulm', 'type': 'conv_lstm', 'number': '1',
-    'fields': cfg.fields['usedfields1'],
+ulm3 = {
+    'name': 'Ulm_lstm_conv3', 'city': 'ulm', 'type': 'lstm_conv', 'number': '_test3',
+    'fields': cfg.fields['usedfields3'],
     'train_bool': False,
     # 'baseline': {'type': 'naive'},
     'plotting': {'marker': 'd', 'linestyle': '-'}
 }
 
 
+def return_models(city):
+    lstm = {
+        'name': 'LSTM', 'city': city, 'type': 'lstm', 'number': '1',
+        'fields': cfg.fields['usedfields1'],
+        'train_bool': False,
+        # 'baseline': {'type': 'naive'},
+        'plotting': {'marker': '^', 'linestyle': '-'}
+    }
+    conv = {
+        'name': 'Convolutional', 'city': city, 'type': 'convolutional', 'number': '1',
+        'fields': cfg.fields['usedfields1'],
+        'train_bool': False,
+        # 'baseline': {'type': 'naive'},
+        'plotting': {'marker': '*', 'linestyle': '-'}
+    }
+    conv_lstm = {
+        'name': 'convLSTM', 'city': city, 'type': 'conv_lstm', 'number': '1',
+        'fields': cfg.fields['usedfields1'],
+        'train_bool': False,
+        # 'baseline': {'type': 'naive'},
+        'plotting': {'marker': 'x', 'linestyle': '-'}
+    }
+    lstm_conv = {
+        'name': 'LSTMconv', 'city': city, 'type': 'lstm_conv', 'number': '1',
+        'fields': cfg.fields['usedfields1'],
+        'train_bool': False,
+        'baseline': {'type': 'naive', 'plotting': {'marker': '', 'linestyle': '--'}},
+        'plotting': {'marker': 'd', 'linestyle': '-'}
+    }
+    return [lstm, conv, conv_lstm, lstm_conv]
+
+
+# almeria, bordeaux, hull, rovaniemi, ulm
+cities = ['ulm', 'almeria', 'hull', 'rovaniemi']
+models = return_models('ulm')
+# models = [rovaniemi, rovaniemi1]
 # models = [almeria, bordeaux, hull, rovaniemi, ulm]
-# models = [ulm_conv, ulm_conv1]
-# models = [ulm, ulm1]
-models = [almeria, almeria1]
+# models = [ulm, ulm1, ulm2]
+# models = [almeria, almeria1]
+# models = [lstm, conv, conv_lstm, lstm_conv]
 # models = [bordeaux, bordeaux1]
 # models = [hull, hull1]
 # models = [ulm, ulm1, almeria, almeria1, bordeaux, bordeaux1, hull, hull1, rovaniemi, rovaniemi1]
+
+# lstm = {
+#     'name': 'LSTM', 'city': city, 'type': 'lstm', 'number': '1',
+#     'fields': cfg.fields['usedfields1'],
+#     'train_bool': False,
+#     # 'baseline': {'type': 'naive'},
+#     'plotting': {'marker': '^', 'linestyle': '-'}
+# }
+# conv = {
+#     'name': 'Convolutional', 'city': city, 'type': 'convolutional', 'number': '1',
+#     'fields': cfg.fields['usedfields1'],
+#     'train_bool': False,
+#     # 'baseline': {'type': 'naive'},
+#     'plotting': {'marker': '*', 'linestyle': '-'}
+# }
+# conv_lstm = {
+#     'name': 'convLSTM', 'city': city, 'type': 'conv_lstm', 'number': '1',
+#     'fields': cfg.fields['usedfields1'],
+#     'train_bool': False,
+#     # 'baseline': {'type': 'naive'},
+#     'plotting': {'marker': 'x', 'linestyle': '-'}
+# }
+# lstm_conv = {
+#     'name': 'LSTMconv', 'city': city, 'type': 'lstm_conv', 'number': '1',
+#     'fields': cfg.fields['usedfields1'],
+#     'train_bool': False,
+#     'baseline': {'type': 'naive', 'plotting': {'marker': '', 'linestyle': '--'}},
+#     'plotting': {'marker': 'd', 'linestyle': '-'}
+# }

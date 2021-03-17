@@ -19,7 +19,7 @@ def create_conv_lstm_model(num_features, name='noname'):
     model.__setattr__('model_type', 'conv_lstm')
 
     model.compile(loss=tf.losses.MeanSquaredError(),
-                  optimizer=tf.optimizers.Adam(),
+                  optimizer=tf.optimizers.Adam(cfg.training['lr_conv_lstm']),
                   metrics=[tf.metrics.MeanAbsoluteError()])
     return model
 
