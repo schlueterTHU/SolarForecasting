@@ -12,13 +12,13 @@ import pickle
 
 
 def main():
-    # models = prepare_models(cfg_mod.models)
+    models = prepare_models(cfg_mod.models)
     # print_metrics(models)
-    plotting.multi_plot(cfg_mod.cities, cfg.errors['metric'])
+    # plotting.multi_plot(cfg_mod.cities, cfg.errors['metric'])
     ################ Plot RMSE ###################
     # plotting.plot_metric(models, 'skewness').show()
     # plotting.plot_metric(models, 'rmse').show()
-    # plotting.plot_metric(models, 'mae').show()
+    plotting.plot_metric(models, 'mae').show()
     # plotting.multi_plot_days(models, cfg.plotting['days'])
     # for day in cfg.plotting['days']:
     #     plotting.plot_forecast(models, day.year, day.month, day.day, day.hour).show()

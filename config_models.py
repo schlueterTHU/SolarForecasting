@@ -104,28 +104,28 @@ ulm3 = {
 
 def return_models(city):
     lstm = {
-        'name': 'LSTM', 'city': city, 'type': 'lstm', 'number': '1',
+        'name': 'LSTM', 'city': city, 'type': 'lstm', 'number': '',
         'fields': cfg.fields['usedfields1'],
         'train_bool': False,
         # 'baseline': {'type': 'naive'},
         'plotting': {'marker': '^', 'linestyle': '-'}
     }
     conv = {
-        'name': 'Convolutional', 'city': city, 'type': 'convolutional', 'number': '1',
+        'name': 'Convolutional', 'city': city, 'type': 'convolutional', 'number': '',
         'fields': cfg.fields['usedfields1'],
         'train_bool': False,
         # 'baseline': {'type': 'naive'},
         'plotting': {'marker': '*', 'linestyle': '-'}
     }
     conv_lstm = {
-        'name': 'convLSTM', 'city': city, 'type': 'conv_lstm', 'number': '1',
+        'name': 'convLSTM', 'city': city, 'type': 'conv_lstm', 'number': '',
         'fields': cfg.fields['usedfields1'],
         'train_bool': False,
         # 'baseline': {'type': 'naive'},
         'plotting': {'marker': 'x', 'linestyle': '-'}
     }
     lstm_conv = {
-        'name': 'LSTMconv', 'city': city, 'type': 'lstm_conv', 'number': '1',
+        'name': 'LSTMconv', 'city': city, 'type': 'lstm_conv', 'number': '',
         'fields': cfg.fields['usedfields1'],
         'train_bool': False,
         'baseline': {'type': 'naive', 'plotting': {'marker': '', 'linestyle': '--'}},
