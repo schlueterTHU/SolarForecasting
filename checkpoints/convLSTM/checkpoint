@@ -1,2 +1,0 @@
-model_checkpoint_path: "convLSTM_model_weights"
-all_model_checkpoint_paths: "convLSTM_model_weights"

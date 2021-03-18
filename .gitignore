@@ -1,5 +1,5 @@
-/checkpoints/
-/data/
-/saver/
+checkpoints/
+data/
+saver/
 test_main.py
 .idea
