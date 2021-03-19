@@ -1,0 +1,3 @@
+This Project generates a forecast relying on historical data. The forecast is produced with NN.
+All general configurations are done in the config.py file.
+The specific configurations for the NN models are done in the config_models.py file.
